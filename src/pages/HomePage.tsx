@@ -1,21 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-
-interface Member {
-  id: number;
-  name: string;
-  yearStartAt: number;
-  yearEndAt: number;
-  medal: boolean;
-  image: string | null;
-  next: number;
-  monthDeath: string;
-  city: string;
-  calledUponDate: string;
-  howDie: string;
-  placeDeath: string | null;
-  ranks: string | null;
-}
+import MemberCard from "../components/HomePage/MemberCard";
+import type { Member } from "../types/member";
 
 export default function HomePage() {
   const [members, setMembers] = useState<Member[]>([]);
@@ -31,7 +17,6 @@ export default function HomePage() {
         );
 
         const data: Member[] = response.data;
-        console.log(data);
         if (data.length === 0) {
           setHasMore(false);
         } else {
@@ -54,100 +39,59 @@ export default function HomePage() {
         }
       },
       {
+        root: null,
         rootMargin: "200px",
+        threshold: 0.1,
       }
     );
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+    const currentLoader = loaderRef.current;
+    if (currentLoader) {
+      observer.observe(currentLoader);
     }
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
       }
     };
   }, [hasMore]);
 
   return (
-    <div className="p-4">
-      <div className="grid grid-cols-3 gap-4">
-        {members.map((member) => (
+    <div className="relative w-full">
+      <div className="overflow-x-auto">
+        <div
+          className="flex gap-y-4 gap-x-3 mt-4 px-[5rem] w-max"
+          style={{ scrollbarWidth: "thin" }}
+        >
+          {/* Первая большая карточка */}
+          {members[0] && <MemberCard member={members[0]} firstInRow={true} />}
+
+          {/* Контейнер с маленькими карточками в две строки */}
           <div
-            key={member.id}
-            className="bg-white shadow p-6 rounded text-black"
-            style={{ minHeight: "300px" }}
+            className="grid grid-rows-2 gap-y-4 gap-x-3 auto-cols-max"
+            style={{ gridAutoFlow: "column" }}
           >
-            <h2 className="text-xl font-semibold mb-4">{member.name}</h2>
-
-            <div className="mb-2">
-              <span className="font-semibold italic text-red-700">
-                Год рождения:{" "}
-              </span>
-              <span>{member.yearStartAt || "?"} г.</span>
-            </div>
-
-            <div className="mb-2">
-              <span className="font-semibold italic text-red-700">
-                Место рождения:{" "}
-              </span>
-              <span>{member.city || "?"}</span>
-            </div>
-
-            <div className="mb-2">
-              <span className="font-semibold italic text-red-700">
-                Звание:{" "}
-              </span>
-              <span>{member.ranks || "?"}</span>
-            </div>
-
-            <div className="mb-2">
-              <span className="font-semibold italic text-red-700">
-                Призван в армию:{" "}
-              </span>
-              <span>{member.calledUponDate || "?"}</span>
-            </div>
-
-            <div className="mb-2">
-              <span className="font-semibold italic text-red-700">
-                Как погиб:{" "}
-              </span>
-              <span>{member.howDie || "?"}</span>
-            </div>
-
-            <div className="mb-2">
-              <span className="font-semibold italic text-red-700">
-                Место гибели (захоронение):{" "}
-              </span>
-              <span>{member.placeDeath || "?"}</span>
-            </div>
-
-            <div className="mb-2">
-              <span className="font-semibold italic text-red-700">
-                Дата гибели:{" "}
-              </span>
-              <span>
-                {(member.monthDeath || "?") + " " + (member.yearEndAt || "?")}{" "}
-                г.
-              </span>
-            </div>
-
-            {member.image && (
-              <img
-                src={member.image}
-                alt={member.name}
-                className="mt-4 rounded w-full h-auto object-cover"
-              />
-            )}
+            {members.slice(1).map((member) => (
+              <MemberCard key={member.id} member={member} firstInRow={false} />
+            ))}
           </div>
-        ))}
+
+          {/* Лоадер — в самом конце скролла */}
+          {hasMore && (
+            <div
+              ref={loaderRef}
+              className="min-w-[5rem] h-full flex items-center justify-center"
+            >
+              <p className="text-gray-500 text-sm">Загружаю...</p>
+            </div>
+          )}
+        </div>
       </div>
 
-      {hasMore && (
-        <div ref={loaderRef} className="h-10 flex justify-center items-center">
-          <p className="text-gray-500">Загружаю...</p>
-        </div>
-      )}
+      <div className="absolute left-0 top-0 h-full w-[5rem] pointer-events-none bg-gradient-to-r from-[#E4D4B8] to-transparent z-10" />
+
+      <div className="absolute right-0 top-0 h-full w-[5rem] pointer-events-none bg-gradient-to-l from-[#E4D4B8] to-transparent z-10" />
     </div>
   );
 }
