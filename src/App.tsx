@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/common/Layout";
 import { Suspense, lazy } from "react";
+import Loading from "./components/common/Loading";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const HeroDetailPage = lazy(() => import("./pages/HeroDetailPage"));
@@ -8,9 +9,7 @@ const SearchPage = lazy(() => import("./pages/SearchPage"));
 
 export default function App() {
   return (
-    <Suspense
-      fallback={<div className="text-center mt-10">Загрузка страницы...</div>}
-    >
+    <Suspense fallback={<Loading text="Загрузка страницы" fullScreen />}>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />

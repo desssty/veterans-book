@@ -11,3 +11,30 @@
 body {
   margin: 0;
 }
+
+@keyframes dot-blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.animate-dot-blink {
+  animation: dot-blink 1.4s infinite;
+}
+
+.delay-0 {
+  animation-delay: 0s;
+}
+
+.delay-1 {
+  animation-delay: 0.4s;
+}
+
+.delay-2 {
+  animation-delay: 0.8s;
+}

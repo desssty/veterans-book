@@ -1,5 +1,6 @@
 import MemberCard from "./MemberCard";
 import type { Member } from "../../types/member";
+import Loading from "../common/Loading";
 
 type MembersScrollProps = {
   members: Member[];
@@ -30,14 +31,7 @@ export default function MembersScroll({
             ))}
           </div>
 
-          {hasMore && (
-            <div
-              ref={loaderRef}
-              className="min-w-[5rem] h-full flex items-center justify-center"
-            >
-              <p className="text-gray-500 text-sm">Загружаю...</p>
-            </div>
-          )}
+          {hasMore && <Loading text={"Загружаю"} ref={loaderRef} />}
         </div>
       </div>
 
