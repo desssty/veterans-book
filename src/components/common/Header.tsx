@@ -1,22 +1,54 @@
 import Logo from "../../assets/logo80.svg";
 import { useLocation } from "react-router-dom";
 
+const INVERSEPATHS = ["/search"];
+
 export default function Header() {
   const location = useLocation();
-  const inversePaths = ["/search"];
-  const isInverse = inversePaths.includes(location.pathname);
+  const isInverse = INVERSEPATHS.some((path) =>
+    location.pathname.startsWith(path)
+  );
 
   const titleColor = isInverse ? "text-white" : "text-black";
   const subtitleColor = isInverse ? "text-[#D3D3D3]" : "text-[#514F4D]";
 
   return (
-    <div className="flex flex-row items-center px-[5rem] pt-[5rem] pb-[3.25rem] gap-[2.5rem]">
-      <img src={Logo} alt="Иконка" className="w-[4.9375rem] h-[10.25rem]" />
+    <div
+      className={`
+        flex flex-row items-center gap-[2.5rem]
+        px-[2rem] pt-[2rem] pb-[1.5rem]
+        sm:px-[3rem] sm:pt-[3rem] sm:pb-[2rem]
+        md:px-[5rem] md:pt-[5rem] md:pb-[3.25rem]
+      `}
+    >
+      <img
+        src={Logo}
+        alt="Иконка"
+        className="
+          w-[3rem] h-[6rem]
+          sm:w-[4rem] sm:h-[8rem]
+          md:w-[4.9375rem] md:h-[10.25rem]
+        "
+      />
       <h1
-        className={`font-semibold text-[3.5rem] leading-none mt-[0.1rem] ${titleColor}`}
+        className={`
+          font-semibold leading-none mt-[0.1rem]
+          text-[2rem]
+          md:text-[3.5rem]
+          ${titleColor}
+        `}
       >
         Музей Боевой и Трудовой Славы
-        <span className={`block ${subtitleColor}`}>город Александров</span>
+        <span
+          className={`
+            block
+            text-[2rem]
+            md:text-[3.5rem]
+            ${subtitleColor}
+          `}
+        >
+          город Александров
+        </span>
       </h1>
     </div>
   );

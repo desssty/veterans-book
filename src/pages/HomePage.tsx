@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import MemberCard from "../components/HomePage/MemberCard";
 import type { Member } from "../types/member";
+import MembersScroll from "../components/HomePage/MembersScroll";
 
 export default function HomePage() {
   const [members, setMembers] = useState<Member[]>([]);
@@ -13,7 +13,7 @@ export default function HomePage() {
     const fetchMembers = async () => {
       try {
         const response = await axios.get(
-          `https://book-memory-sections-out.itlabs.top/api/members?page=${page}&itemsPerPage=14`
+          `https://book-memory-sections-out.itlabs.top/api/members?page=${page}&itemsPerPage=13`
         );
 
         const data: Member[] = response.data;
@@ -40,7 +40,7 @@ export default function HomePage() {
       },
       {
         root: null,
-        rootMargin: "200px",
+        rootMargin: "400px",
         threshold: 0.1,
       }
     );
@@ -58,40 +58,6 @@ export default function HomePage() {
   }, [hasMore]);
 
   return (
-    <div className="relative w-full">
-      <div className="overflow-x-auto">
-        <div
-          className="flex gap-y-4 gap-x-3 mt-4 px-[5rem] w-max"
-          style={{ scrollbarWidth: "thin" }}
-        >
-          {/* Первая большая карточка */}
-          {members[0] && <MemberCard member={members[0]} firstInRow={true} />}
-
-          {/* Контейнер с маленькими карточками в две строки */}
-          <div
-            className="grid grid-rows-2 gap-y-4 gap-x-3 auto-cols-max"
-            style={{ gridAutoFlow: "column" }}
-          >
-            {members.slice(1).map((member) => (
-              <MemberCard key={member.id} member={member} firstInRow={false} />
-            ))}
-          </div>
-
-          {/* Лоадер — в самом конце скролла */}
-          {hasMore && (
-            <div
-              ref={loaderRef}
-              className="min-w-[5rem] h-full flex items-center justify-center"
-            >
-              <p className="text-gray-500 text-sm">Загружаю...</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="absolute left-0 top-0 h-full w-[5rem] pointer-events-none bg-gradient-to-r from-[#E4D4B8] to-transparent z-10" />
-
-      <div className="absolute right-0 top-0 h-full w-[5rem] pointer-events-none bg-gradient-to-l from-[#E4D4B8] to-transparent z-10" />
-    </div>
+    <MembersScroll members={members} hasMore={hasMore} loaderRef={loaderRef} />
   );
 }
