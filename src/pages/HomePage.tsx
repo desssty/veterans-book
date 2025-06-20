@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import type { Member } from "../types/member";
 import MembersScroll from "../components/HomePage/MembersScroll";
+import MemberPanel from "../components/HomePage/MemberPanel";
 
 export default function HomePage() {
   const [members, setMembers] = useState<Member[]>([]);
@@ -58,6 +59,13 @@ export default function HomePage() {
   }, [hasMore]);
 
   return (
-    <MembersScroll members={members} hasMore={hasMore} loaderRef={loaderRef} />
+    <>
+      <MemberPanel />
+      <MembersScroll
+        members={members}
+        hasMore={hasMore}
+        loaderRef={loaderRef}
+      />
+    </>
   );
 }

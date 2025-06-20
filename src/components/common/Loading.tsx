@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 
 type LoadingProps = {
   text: string;
-  fullScreen?: boolean; // режим для полной страницы
+  fullScreen?: boolean;
 };
 
 const Loading = forwardRef<HTMLDivElement, LoadingProps>(
