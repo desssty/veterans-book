@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet";
-import VirtualKeyboard from "../components/common/Keyboard/VirtualKeyboard";
+import VirtualKeyboard from "../components/common/VirtualKeyboard";
 
 function isDesktop() {
   if (typeof navigator === "undefined") return true;

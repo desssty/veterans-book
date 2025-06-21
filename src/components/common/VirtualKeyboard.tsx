@@ -36,6 +36,69 @@ const symbolKeys = [
   ["ABC", "🌐", "space", "Enter"],
 ];
 
+function getKeyClassName(key: string, shiftActive: boolean): string {
+  if (key === "Enter") {
+    return "bg-red-500 text-white w-[152px] h-[48px] hover:bg-[#792426] active:bg-[#792426] transition-colors duration-200 ease-in-out";
+  }
+  if (key === "space") {
+    return "bg-white w-[406px] h-[48px] text-[#2B2A29] hover:bg-[#EBEBEB] active:bg-[#EBEBEB] transition-colors duration-200 ease-in-out";
+  }
+  if (key === "shift" || key === "backspace") {
+    return `bg-[#EBEBEB] w-[103px] h-[48px] text-[#2B2A29] hover:bg-[#514F4D] active:bg-[#514F4D] transition-colors duration-200 ease-in-out ${
+      key === "shift" && shiftActive ? "bg-[#514F4D] text-white" : ""
+    }`;
+  }
+  if (key === "&123" || key === "ABC" || key === "🌐") {
+    return "bg-[#EBEBEB] w-[72px] h-[48px] text-[#2B2A29] hover:bg-[#514F4D] active:bg-[#514F4D] transition-colors duration-200 ease-in-out";
+  }
+  return "bg-white w-[65px] h-[48px] text-[#2B2A29] hover:bg-[#EBEBEB] active:bg-[#EBEBEB] transition-colors duration-200 ease-in-out";
+}
+
+function renderKeyContent(key: string, keyboardType: string) {
+  switch (key) {
+    case "space":
+      return keyboardType === "ru" ? "Пробел" : "Space";
+    case "backspace":
+      return <img src={backspaceIcon} alt="Backspace" width={32} height={32} />;
+    case "shift":
+      return <img src={shiftIcon} alt="Shift" width={32} height={32} />;
+    case "🌐":
+      return <img src={globeIcon} alt="Globe" width={24} height={24} />;
+    default:
+      return key;
+  }
+}
+
+function switchLanguage(
+  current: "en" | "ru" | "symbols"
+): "en" | "ru" | "symbols" {
+  if (current === "en") return "ru";
+  if (current === "ru") return "en";
+  return current;
+}
+
+function useBackspaceAutoRepeat(onBackspace?: () => void) {
+  const backspaceIntervalRef = useRef<number | null>(null);
+
+  const start = () => {
+    onBackspace?.();
+    if (backspaceIntervalRef.current) return;
+
+    backspaceIntervalRef.current = window.setInterval(() => {
+      onBackspace?.();
+    }, 100);
+  };
+
+  const stop = () => {
+    if (backspaceIntervalRef.current) {
+      clearInterval(backspaceIntervalRef.current);
+      backspaceIntervalRef.current = null;
+    }
+  };
+
+  return { start, stop };
+}
+
 export default function VirtualKeyboard({
   onKeyPress,
   onBackspace,
@@ -47,10 +110,10 @@ export default function VirtualKeyboard({
   const [keyboardType, setKeyboardType] = useState<"en" | "ru" | "symbols">(
     "en"
   );
-
   const [shiftActive, setShiftActive] = useState(false);
 
-  const backspaceIntervalRef = useRef<number | null>(null);
+  const { start: startBackspaceAutoRepeat, stop: stopBackspaceAutoRepeat } =
+    useBackspaceAutoRepeat(onBackspace);
 
   const keys =
     keyboardType === "en"
@@ -67,11 +130,7 @@ export default function VirtualKeyboard({
     } else if (key === "space") {
       onKeyPress(" ");
     } else if (key === "🌐") {
-      setKeyboardType((prev) => {
-        if (prev === "en") return "ru";
-        if (prev === "ru") return "en";
-        return prev;
-      });
+      setKeyboardType((prev) => switchLanguage(prev));
       setShiftActive(false);
     } else if (key === "&123") {
       setKeyboardType("symbols");
@@ -92,22 +151,6 @@ export default function VirtualKeyboard({
       } else {
         onKeyPress(key);
       }
-    }
-  };
-
-  const startBackspaceAutoRepeat = () => {
-    onBackspace?.();
-    if (backspaceIntervalRef.current) return;
-
-    backspaceIntervalRef.current = window.setInterval(() => {
-      onBackspace?.();
-    }, 100);
-  };
-
-  const stopBackspaceAutoRepeat = () => {
-    if (backspaceIntervalRef.current) {
-      clearInterval(backspaceIntervalRef.current);
-      backspaceIntervalRef.current = null;
     }
   };
 
@@ -170,54 +213,21 @@ export default function VirtualKeyboard({
                     type="button"
                     onClick={() => handleKeyClick(key)}
                     {...backspaceHandlers}
-                    className={`
-                    rounded-[8px]
-                    font-medium
-                    text-[1.125rem]
-                    select-none
-                    focus:outline-none
-                    flex
-                    items-center
-                    justify-center
-                    cursor-pointer
-                    ${
-                      key === "Enter"
-                        ? "bg-red-500 text-white w-[152px] h-[48px] hover:bg-[#792426] active:bg-[#792426] transition-colors duration-200 ease-in-out"
-                        : key === "space"
-                        ? "bg-white w-[406px] h-[48px] text-[#2B2A29] hover:bg-[#EBEBEB] active:bg-[#EBEBEB] transition-colors duration-200 ease-in-out"
-                        : key === "shift" || key === "backspace"
-                        ? `bg-[#EBEBEB] w-[103px] h-[48px] text-[#2B2A29] hover:bg-[#514F4D] active:bg-[#514F4D] transition-colors duration-200 ease-in-out ${
-                            key === "shift" && shiftActive
-                              ? "bg-[#514F4D] text-white"
-                              : ""
-                          }`
-                        : key === "&123" || key === "ABC" || key === "🌐"
-                        ? "bg-[#EBEBEB] w-[72px] h-[48px] text-[#2B2A29] hover:bg-[#514F4D] active:bg-[#514F4D] transition-colors duration-200 ease-in-out"
-                        : "bg-white w-[65px] h-[48px] text-[#2B2A29] hover:bg-[#EBEBEB] active:bg-[#EBEBEB] transition-colors duration-200 ease-in-out"
-                    }
-                  `}
+                    className={`${getKeyClassName(
+                      key,
+                      shiftActive
+                    )} rounded-[8px] font-medium text-[1.125rem] select-none focus:outline-none flex items-center justify-center cursor-pointer`}
                     style={{ boxShadow: "0 1px 0 #2B2A29" }}
                   >
-                    {key === "space" ? (
-                      keyboardType === "ru" ? (
-                        "Пробел"
-                      ) : (
-                        "Space"
-                      )
-                    ) : key === "backspace" ? (
-                      <img
-                        src={backspaceIcon}
-                        alt="Backspace"
-                        width={32}
-                        height={32}
-                      />
-                    ) : key === "shift" ? (
-                      <img src={shiftIcon} alt="Shift" width={32} height={32} />
-                    ) : key === "🌐" ? (
-                      <img src={globeIcon} alt="Globe" width={24} height={24} />
-                    ) : (
-                      displayKey
-                    )}
+                    {renderKeyContent(
+                      key === "space" ? "space" : key,
+                      keyboardType
+                    ) === key
+                      ? displayKey
+                      : renderKeyContent(
+                          key === "space" ? "space" : key,
+                          keyboardType
+                        )}
                   </button>
                 );
               })}
