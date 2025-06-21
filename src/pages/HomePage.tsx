@@ -1,43 +1,42 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import axios from "axios";
-import type { Member } from "../types/member";
 import MembersScroll from "../components/HomePage/MembersScroll";
 import MemberPanel from "../components/HomePage/MemberPanel";
+import { useMembers } from "../context/MembersContext";
 
 export default function HomePage() {
-  const [members, setMembers] = useState<Member[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const { state, dispatch } = useMembers();
+  const { members, page, hasMore } = state;
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchMembers = async () => {
+    async function fetchMembers() {
       try {
         const response = await axios.get(
           `https://book-memory-sections-out.itlabs.top/api/members?page=${page}&itemsPerPage=13`
         );
 
-        const data: Member[] = response.data;
+        const data = response.data;
         if (data.length === 0) {
-          setHasMore(false);
+          dispatch({ type: "SET_HAS_MORE", payload: false });
         } else {
-          setMembers((prev) => [...prev, ...data]);
+          dispatch({ type: "ADD_MEMBERS", payload: data });
         }
       } catch (error) {
         console.error("Ошибка загрузки:", error);
       }
-    };
+    }
 
     fetchMembers();
-  }, [page]);
+  }, [page, dispatch]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
         if (target.isIntersecting && hasMore) {
-          setPage((prev) => prev + 1);
+          dispatch({ type: "INCREMENT_PAGE" });
         }
       },
       {
@@ -48,16 +47,12 @@ export default function HomePage() {
     );
 
     const currentLoader = loaderRef.current;
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
+    if (currentLoader) observer.observe(currentLoader);
 
     return () => {
-      if (currentLoader) {
-        observer.unobserve(currentLoader);
-      }
+      if (currentLoader) observer.unobserve(currentLoader);
     };
-  }, [hasMore]);
+  }, [hasMore, dispatch]);
 
   return (
     <>
