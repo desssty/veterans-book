@@ -1,4 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Times New Roman", serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-serif);
+  }
+}
 
 :root {
   color-scheme: light dark;

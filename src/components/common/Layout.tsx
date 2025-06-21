@@ -10,7 +10,7 @@ export default function Layout() {
   );
 
   return (
-    <div className="bg-[#F2E5CC] font-['Times_New_Roman']">
+    <div className="bg-[#F2E5CC]">
       {isInverse && (
         <div className="fixed inset-0 bg-gradient-to-b from-[#323232] to-[#000000] opacity-75 z-0 pointer-events-none" />
       )}
