@@ -1,3 +1,12 @@
+import { Helmet } from "react-helmet";
+
 export default function SearchPage() {
-  return <div>SEARCH</div>;
+  return (
+    <>
+      <Helmet>
+        <title>Поиск</title>
+      </Helmet>
+      <div>SEARCH</div>
+    </>
+  );
 }

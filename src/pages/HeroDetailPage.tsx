@@ -1,3 +1,12 @@
+import { Helmet } from "react-helmet";
+
 export default function HeroPage() {
-  return <div>HERO</div>;
+  return (
+    <>
+      <Helmet>
+        <title>Герой</title>
+      </Helmet>
+      <div>HERO</div>
+    </>
+  );
 }

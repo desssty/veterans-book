@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { Helmet } from "react-helmet";
 import axios from "axios";
 import type { Member } from "../types/member";
 import MembersScroll from "../components/HomePage/MembersScroll";
@@ -60,6 +61,9 @@ export default function HomePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Стена Памяти</title>
+      </Helmet>
       <MemberPanel />
       <MembersScroll
         members={members}
