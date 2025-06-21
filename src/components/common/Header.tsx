@@ -1,14 +1,10 @@
 import Logo from "../../assets/logo80.svg";
-import { useLocation } from "react-router-dom";
 
-const INVERSEPATHS = ["/search"];
+type HeaderProps = {
+  isInverse: boolean;
+};
 
-export default function Header() {
-  const location = useLocation();
-  const isInverse = INVERSEPATHS.some((path) =>
-    location.pathname.startsWith(path)
-  );
-
+export default function Header({ isInverse }: HeaderProps) {
   const titleColor = isInverse ? "text-white" : "text-black";
   const subtitleColor = isInverse ? "text-[#D3D3D3]" : "text-[#514F4D]";
 
