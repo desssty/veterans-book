@@ -19,21 +19,21 @@ const enKeys = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
   ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
   ["shift", "z", "x", "c", "v", "b", "n", "m", "backspace"],
-  ["&123", "🌐", "space", "Enter"],
+  ["&123", "language", "space", "Enter"],
 ];
 
 const ruKeys = [
   ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з"],
   ["ф", "ы", "в", "а", "п", "р", "о", "л", "д"],
   ["shift", "я", "ч", "с", "м", "и", "т", "ь", "backspace"],
-  ["&123", "🌐", "space", "Enter"],
+  ["&123", "language", "space", "Enter"],
 ];
 
 const symbolKeys = [
   ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
   ["@", "#", "$", "_", "&", "-", "+", "(", ")"],
   ["*", '"', "'", ":", ";", "!", "?", "/", "backspace"],
-  ["ABC", "🌐", "space", "Enter"],
+  ["ABC", "language", "space", "Enter"],
 ];
 
 function getKeyClassName(key: string, shiftActive: boolean): string {
@@ -62,7 +62,7 @@ function renderKeyContent(key: string, keyboardType: string) {
       return <img src={backspaceIcon} alt="Backspace" width={32} height={32} />;
     case "shift":
       return <img src={shiftIcon} alt="Shift" width={32} height={32} />;
-    case "🌐":
+    case "language":
       return <img src={globeIcon} alt="Globe" width={24} height={24} />;
     default:
       return key;
@@ -129,7 +129,7 @@ export default function VirtualKeyboard({
       onEnter?.();
     } else if (key === "space") {
       onKeyPress(" ");
-    } else if (key === "🌐") {
+    } else if (key === "language") {
       setKeyboardType((prev) => switchLanguage(prev));
       setShiftActive(false);
     } else if (key === "&123") {
