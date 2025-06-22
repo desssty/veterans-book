@@ -2,11 +2,11 @@ import MemberCard from "./MemberCard";
 import type { Member } from "../../types/member";
 import Loading from "../common/Loading";
 
-type MembersScrollProps = {
+interface MembersScrollProps {
   members: Member[];
   hasMore: boolean;
   loaderRef: React.RefObject<HTMLDivElement | null>;
-};
+}
 
 export default function MembersScroll({
   members,

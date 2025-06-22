@@ -1,19 +1,19 @@
 import { useState, useRef } from "react";
-import backspaceIcon from "../../../assets/backspaceIcon.svg";
-import shiftIcon from "../../../assets/shiftIcon.svg";
-import globeIcon from "../../../assets/globeIcon.svg";
-import crossIcon from "../../../assets/crossIcon.svg";
-import previousIcon from "../../../assets/previousIcon.svg";
-import nextIcon from "../../../assets/nextIcon.svg";
+import backspaceIcon from "../../assets/backspaceIcon.svg";
+import shiftIcon from "../../assets/shiftIcon.svg";
+import globeIcon from "../../assets/globeIcon.svg";
+import crossIcon from "../../assets/crossIcon.svg";
+import previousIcon from "../../assets/previousIcon.svg";
+import nextIcon from "../../assets/nextIcon.svg";
 
-type KeyboardProps = {
+interface KeyboardProps {
   onKeyPress: (key: string) => void;
   onBackspace?: () => void;
   onEnter?: () => void;
   onNext?: () => void;
   onPrev?: () => void;
   onClose?: () => void;
-};
+}
 
 const enKeys = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],

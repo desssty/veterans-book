@@ -1,9 +1,9 @@
 import React, { forwardRef } from "react";
 
-type LoadingProps = {
+interface LoadingProps {
   text: string;
   fullScreen?: boolean;
-};
+}
 
 const Loading = forwardRef<HTMLDivElement, LoadingProps>(
   ({ text, fullScreen = false }, ref) => {

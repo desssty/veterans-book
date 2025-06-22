@@ -1,8 +1,8 @@
 import Logo from "../../assets/logo80.svg";
 
-type HeaderProps = {
+interface HeaderProps {
   isInverse: boolean;
-};
+}
 
 export default function Header({ isInverse }: HeaderProps) {
   const titleColor = isInverse ? "text-white" : "text-black";

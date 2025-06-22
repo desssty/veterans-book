@@ -2,10 +2,10 @@ import type { Member } from "../../types/member";
 import { Link } from "react-router-dom";
 import unknownPerson from "../../assets/unknownPerson.jpg";
 
-type MemberCardProps = {
+interface MemberCardProps {
   member: Member;
   firstInRow?: boolean;
-};
+}
 
 export default function MemberCard({
   member,
