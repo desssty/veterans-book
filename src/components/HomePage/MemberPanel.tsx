@@ -1,8 +1,8 @@
 import { useState } from "react";
 import PanelButton from "../common/PanelButton";
-import filterLogo from "./../../assets/filterLogo.svg";
-import searchWhiteLogo from "./../../assets/searchWhiteLogo.svg";
-import filterActiveLogo from "./../../assets/filterActiveLogo.svg";
+import filterIcon from "./../../assets/filterLogo.svg";
+import searchWhiteIcon from "./../../assets/searchWhiteIcon.svg";
+import filterActiveIcon from "./../../assets/filterActiveIcon.svg";
 
 export default function MemberPanel() {
   const [filterActive, setFilterActive] = useState(false);
@@ -15,7 +15,7 @@ export default function MemberPanel() {
         type="link"
         href="/search"
         active={true}
-        icon={searchWhiteLogo}
+        icon={searchWhiteIcon}
         label="ПОИСК ГЕРОЯ"
         {...btnSize}
       />
@@ -24,7 +24,7 @@ export default function MemberPanel() {
       {!filterActive && (
         <PanelButton
           type="button"
-          icon={filterLogo}
+          icon={filterIcon}
           label="ФИЛЬТР"
           active={false}
           onClick={() => setFilterActive(true)}
@@ -36,7 +36,7 @@ export default function MemberPanel() {
       {filterActive && (
         <PanelButton
           type="button"
-          icon={filterActiveLogo}
+          icon={filterActiveIcon}
           label="ФИЛЬТР АКТИВЕН"
           active={true}
           onClick={() => setFilterActive(false)}
