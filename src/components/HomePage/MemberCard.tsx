@@ -11,22 +11,22 @@ export default function MemberCard({
   member,
   firstInRow = false,
 }: MemberCardProps) {
-  const cardSizeClass = firstInRow
-    ? "w-[20rem] sm:w-[24rem] md:w-[26.75rem] h-[28rem] sm:h-[32rem] md:h-[35.69rem]"
-    : "w-[9rem] sm:w-[11rem] md:w-[13rem] h-[12rem] sm:h-[14rem] md:h-[17.31rem]";
+  const baseSizeClass = firstInRow
+    ? "w-[20rem] sm:w-[24rem] md:w-[27rem] h-[28rem] sm:h-[32rem] md:h-[36rem]"
+    : "w-[9rem] sm:w-[11rem] md:w-[13rem] h-[12rem] sm:h-[14rem] md:h-[17.5rem]";
 
   const titleClass = firstInRow
-    ? "text-[1.75rem] px-6 pb-6"
-    : "text-base px-3 pb-3";
+    ? "text-xl sm:text-2xl md:text-3xl px-4 sm:px-6 pb-4 sm:pb-6"
+    : "text-sm sm:text-base px-2 sm:px-3 pb-2 sm:pb-3";
 
   return (
     <Link to={`/hero/${member.id}`} className="block">
       <div
-        className={`rounded cursor-pointer flex flex-col justify-end overflow-hidden ${cardSizeClass}`}
+        className={`bg-cover bg-center flex flex-col justify-end overflow-hidden cursor-pointer ${baseSizeClass}`}
         style={{
-          backgroundImage: member.image ? undefined : `url(${unknownPerson})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundImage: member.image
+            ? `url(${member.image})`
+            : `url(${unknownPerson})`,
         }}
       >
         <h2 className={`italic font-semibold text-white ${titleClass}`}>
