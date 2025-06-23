@@ -20,7 +20,7 @@ export default function MemberCard({
     : "text-base px-3 pb-3";
 
   return (
-    <Link to={`/hero/id:${member.id}`} className="block">
+    <Link to={`/hero/${member.id}`} className="block">
       <div
         className={`rounded cursor-pointer flex flex-col justify-end overflow-hidden ${cardSizeClass}`}
         style={{

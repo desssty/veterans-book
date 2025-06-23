@@ -4,6 +4,7 @@ import type { Member } from "../types/member";
 
 type State = {
   members: Member[];
+  membersMap: Record<string, Member>;
   page: number;
   hasMore: boolean;
 };
@@ -11,22 +12,35 @@ type State = {
 type Action =
   | { type: "ADD_MEMBERS"; payload: Member[] }
   | { type: "INCREMENT_PAGE" }
-  | { type: "SET_HAS_MORE"; payload: boolean }
-  | { type: "RESET" };
+  | { type: "SET_HAS_MORE"; payload: boolean };
 
 const initialState: State = {
   members: [],
   page: 1,
   hasMore: true,
+  membersMap: {},
 };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "ADD_MEMBERS":
+    case "ADD_MEMBERS": {
+      const newMembersMap = { ...state.membersMap };
+      action.payload.forEach((m) => {
+        newMembersMap[m.id] = m;
+      });
+
+      const existingIds = new Set(state.members.map((m) => m.id));
+      const uniqueNewMembers = action.payload.filter(
+        (m) => !existingIds.has(m.id)
+      );
+
       return {
         ...state,
-        members: [...state.members, ...action.payload],
+        members: [...state.members, ...uniqueNewMembers],
+        membersMap: newMembersMap,
       };
+    }
+
     case "INCREMENT_PAGE":
       return {
         ...state,
@@ -37,8 +51,6 @@ function reducer(state: State, action: Action): State {
         ...state,
         hasMore: action.payload,
       };
-    case "RESET":
-      return initialState;
     default:
       return state;
   }
