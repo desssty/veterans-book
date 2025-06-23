@@ -17,15 +17,17 @@ export default function Header({ isInverse }: HeaderProps) {
         md:px-[5rem] md:pt-[5rem] md:pb-[3.25rem]
       `}
     >
-      <img
-        src={Logo}
-        alt="Иконка"
-        className="
+      <a href="/">
+        <img
+          src={Logo}
+          alt="80-лет Победы"
+          className="
           w-[3rem] h-[6rem]
           sm:w-[4rem] sm:h-[8rem]
           md:w-[4.9375rem] md:h-[10.25rem]
         "
-      />
+        />
+      </a>
       <h1
         className={`
           font-semibold leading-none mt-[0.1rem]
