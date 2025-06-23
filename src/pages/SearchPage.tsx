@@ -35,22 +35,22 @@ export default function SearchPage() {
         <title>Поиск</title>
       </Helmet>
 
-      <div className="flex flex-col items-center  p-4 max-w-[800px] mx-auto gap-[27vh]">
-        <div className="mb-6">
-          <h1 className="flex flex-col items-center  text-white text-[2.5rem] text-light mb-4">
+      <div className="flex flex-col items-center max-w-[33rem] mx-auto gap-[27vh]">
+        <div className={`flex flex-col gap-[4rem] items-center `}>
+          <h1 className="flex flex-col items-center text-white text-[2.5rem] text-light mb-4">
             ПОИСК ПО БАЗЕ ГЕРОЕВ
           </h1>
-          <div className="w-[45vw] h-[5rem] flex flex-row items-center border border-gray-400 rounded bg-transparent">
+          <div className="w-[45vw] h-[5rem] flex flex-row items-center border-0 border-b-2 border-[#C1A886] bg-transparent focus:outline-none">
             <input
               placeholder="Кого вы ищите?"
               value={value}
-              className="flex-1 h-full text-[2rem] text-white italic p-3 bg-transparent placeholder-white focus:outline-none focus:ring-0 focus:border-none"
+              className="flex-1 h-full text-[2rem] text-white italic p-3 bg-transparent placeholder-white focus:outline-none"
               onFocus={handleFocus}
               onChange={handleChange}
             />
             <button
               onClick={() => console.log("Поиск по запросу:", value)}
-              className="h-full flex items-center justify-center pr-[10%] cursor-pointer"
+              className="h-full flex items-center justify-center pr-[2rem] cursor-pointer"
             >
               <img
                 src={searchWhiteIcon}
@@ -59,29 +59,29 @@ export default function SearchPage() {
               />
             </button>
           </div>
+          {showKeyboard && (
+            <VirtualKeyboard
+              onKeyPress={(key) => setValue((prev) => prev + key)}
+              onBackspace={() => setValue((prev) => prev.slice(0, -1))}
+              onEnter={() => console.log("Submit")}
+              onNext={() => console.log("Next field")}
+              onPrev={() => console.log("Prev field")}
+              onClose={() => setShowKeyboard(false)}
+            />
+          )}
         </div>
 
-        <PanelButton
-          type="link"
-          href="/"
-          label="НА ГЛАВНУЮ"
-          active={false}
-          transparentWhite={true}
-          {...btnSize}
-        />
-      </div>
-      {showKeyboard && (
-        <div className="absolute left-0 top-0">
-          <VirtualKeyboard
-            onKeyPress={(key) => setValue((prev) => prev + key)}
-            onBackspace={() => setValue((prev) => prev.slice(0, -1))}
-            onEnter={() => console.log("Submit")}
-            onNext={() => console.log("Next field")}
-            onPrev={() => console.log("Prev field")}
-            onClose={() => setShowKeyboard(false)}
+        {!showKeyboard && (
+          <PanelButton
+            type="link"
+            href="/"
+            label="НА ГЛАВНУЮ"
+            active={false}
+            transparentWhite={true}
+            {...btnSize}
           />
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }

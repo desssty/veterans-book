@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PanelButton from "../common/PanelButton";
-import filterIcon from "./../../assets/filterLogo.svg";
+import filterIcon from "./../../assets/filterIcon.svg";
 import searchWhiteIcon from "./../../assets/searchWhiteIcon.svg";
 import filterActiveIcon from "./../../assets/filterActiveIcon.svg";
 

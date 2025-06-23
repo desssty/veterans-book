@@ -48,7 +48,7 @@ function getKeyClassName(key: string, shiftActive: boolean): string {
       key === "shift" && shiftActive ? "bg-[#514F4D] text-white" : ""
     }`;
   }
-  if (key === "&123" || key === "ABC" || key === "🌐") {
+  if (key === "&123" || key === "ABC" || key === "language") {
     return "bg-[#EBEBEB] w-[72px] h-[48px] text-[#2B2A29] hover:bg-[#514F4D] active:bg-[#514F4D] transition-colors duration-200 ease-in-out";
   }
   return "bg-white w-[65px] h-[48px] text-[#2B2A29] hover:bg-[#EBEBEB] active:bg-[#EBEBEB] transition-colors duration-200 ease-in-out";
@@ -156,7 +156,7 @@ export default function VirtualKeyboard({
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="virtual-keyboard bg-[#FAFAFA] rounded-[36px] p-4 shadow-lg mx-auto w-[920px] h-[320px] font-sans">
+      <div className="bg-[#FAFAFA] rounded-[36px] p-4 shadow-lg mx-auto w-[920px] h-[320px] font-sans">
         <div className="w-[872px] h-[32px] flex justify-between mb-2 mx-auto text-[1.125rem] mt-[5px] font-normal text-[#514F4D]">
           <button
             className="flex flex-row gap-[8px] items-center cursor-pointer"
