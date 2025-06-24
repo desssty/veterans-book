@@ -24,7 +24,7 @@ const initialState: State = {
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "ADD_MEMBERS": {
-      const newMembersMap = { ...state.membersMap };
+      const newMembersMap = { ...state.members };
       action.payload.forEach((m) => {
         newMembersMap[m.id] = m;
       });
@@ -37,7 +37,6 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         members: [...state.members, ...uniqueNewMembers],
-        membersMap: newMembersMap,
       };
     }
 
@@ -46,6 +45,7 @@ function reducer(state: State, action: Action): State {
         ...state,
         page: state.page + 1,
       };
+
     case "SET_HAS_MORE":
       return {
         ...state,
@@ -74,7 +74,9 @@ export function MembersProvider({ children }: { children: ReactNode }) {
 export function useMembers() {
   const context = useContext(MembersContext);
   if (!context) {
-    throw new Error("useMembers must be used within MembersProvider");
+    throw new Error(
+      "useMembers должен использоваться только с MembersProvider"
+    );
   }
   return context;
 }
