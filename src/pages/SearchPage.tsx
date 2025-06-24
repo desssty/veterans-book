@@ -3,11 +3,12 @@ import { Helmet } from "react-helmet";
 import VirtualKeyboard from "../components/common/VirtualKeyboard";
 import PanelButton from "../components/common/PanelButton";
 import searchWhiteIcon from "../assets/searchWhiteIcon.svg";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function isDesktop() {
   if (typeof navigator === "undefined") return true;
   const userAgent = navigator.userAgent;
-  console.log("UserAgent:", navigator.userAgent);
 
   return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     userAgent
@@ -18,6 +19,7 @@ export default function SearchPage() {
   const [value, setValue] = useState("");
   const [showKeyboard, setShowKeyboard] = useState(false);
   const btnSize = { width: "36rem", height: "4.3rem" };
+  const navigate = useNavigate();
 
   const handleFocus = () => {
     if (isDesktop()) {
@@ -25,8 +27,17 @@ export default function SearchPage() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.get(
+        `https://book-memory-sections-out.itlabs.top/api/members?name=${value}`
+      );
+
+      console.log("Ответ от API:", response.data);
+      navigate("/");
+    } catch (error) {
+      console.error("Ошибка при поиске участника:", error);
+    }
   };
 
   return (
@@ -51,12 +62,17 @@ export default function SearchPage() {
             <input
               placeholder="Кого вы ищите?"
               value={value}
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
+              onFocus={() => {
+                handleFocus();
+              }}
               className="flex-1 h-full text-[2rem] text-white italic p-3 bg-transparent placeholder-white focus:outline-none"
-              onFocus={handleFocus}
-              onChange={handleChange}
             />
+
             <button
-              onClick={() => console.log("Поиск по запросу:", value)}
+              onClick={handleSubmit}
               className="h-full flex items-center justify-center pr-[2rem] cursor-pointer"
             >
               <img
@@ -70,9 +86,7 @@ export default function SearchPage() {
             <VirtualKeyboard
               onKeyPress={(key) => setValue((prev) => prev + key)}
               onBackspace={() => setValue((prev) => prev.slice(0, -1))}
-              onEnter={() => console.log("Submit")}
-              onNext={() => console.log("Next field")}
-              onPrev={() => console.log("Prev field")}
+              onEnter={() => handleSubmit()}
               onClose={() => setShowKeyboard(false)}
             />
           )}

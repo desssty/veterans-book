@@ -26,8 +26,8 @@ export default function HeroDetailPage() {
         <div className="mt-[6rem]">
           <PanelButton
             type="link"
-            href="/"
-            label="НА ГЛАВНУЮ"
+            href="/search"
+            label="К ПОИСКУ"
             active={false}
             {...btnSizeNotMember}
           />
