@@ -17,8 +17,23 @@ export default function HeroDetailPage() {
     ? state.members.find((m) => String(m.id) === String(id))
     : null;
 
+  const btnSizeNotMember = { width: "36rem", height: "4.3125rem" };
+
   if (!member) {
-    return <div>Участник не найден</div>;
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <p className="text-gray-500 text-5xl">Герой не найден</p>
+        <div className="mt-[6rem]">
+          <PanelButton
+            type="link"
+            href="/"
+            label="НА ГЛАВНУЮ"
+            active={false}
+            {...btnSizeNotMember}
+          />
+        </div>
+      </div>
+    );
   }
 
   const handleNext = async () => {
