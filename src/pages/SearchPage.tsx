@@ -17,7 +17,7 @@ function isDesktop() {
 export default function SearchPage() {
   const [value, setValue] = useState("");
   const [showKeyboard, setShowKeyboard] = useState(false);
-  const btnSize = { width: "576px", height: "69px" };
+  const btnSize = { width: "36rem", height: "4.3rem" };
 
   const handleFocus = () => {
     if (isDesktop()) {
@@ -35,12 +35,19 @@ export default function SearchPage() {
         <title>Поиск</title>
       </Helmet>
 
-      <div className="flex flex-col items-center max-w-[33rem] mx-auto gap-[27vh]">
-        <div className={`flex flex-col gap-[4rem] items-center `}>
-          <h1 className="flex flex-col items-center text-white text-[2.5rem] text-light mb-4">
+      <div
+        className={`flex flex-col items-center max-w-[33rem] mx-auto gap-[27vh] transition-padding ${
+          showKeyboard ? "pt-[6vh]" : "pt-[13vh]"
+        }`}
+      >
+        <div className="flex flex-col gap-[4rem] items-center">
+          <h1
+            className="flex flex-col items-center text-white text-[2.5rem] font-light mb-4"
+            style={{ letterSpacing: "0.12em" }}
+          >
             ПОИСК ПО БАЗЕ ГЕРОЕВ
           </h1>
-          <div className="w-[45vw] h-[5rem] flex flex-row items-center border-0 border-b-2 border-[#C1A886] bg-transparent focus:outline-none">
+          <div className="w-[45vw] h-[5rem] flex flex-row items-center border-0 border-b-[0.125rem] border-[#C1A886] bg-transparent focus:outline-none">
             <input
               placeholder="Кого вы ищите?"
               value={value}
@@ -55,7 +62,7 @@ export default function SearchPage() {
               <img
                 src={searchWhiteIcon}
                 alt="Поиск"
-                className="w-[48px] h-[48px]"
+                className="w-[3rem] h-[3rem]"
               />
             </button>
           </div>

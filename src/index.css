@@ -50,3 +50,9 @@ body {
 .delay-2 {
   animation-delay: 0.8s;
 }
+.transition-padding {
+  transition-property: padding-top;
+  transition-duration: 100ms;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0ms;
+}

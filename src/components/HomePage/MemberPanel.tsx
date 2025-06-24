@@ -45,14 +45,16 @@ export default function MemberPanel() {
       )}
 
       {/* Очистить всё */}
-      <PanelButton
-        type="button"
-        label="ОЧИСТИТЬ ВСЁ"
-        bordered={true}
-        active={false}
-        onClick={() => setFilterActive(false)}
-        {...btnSize}
-      />
+      {filterActive && (
+        <PanelButton
+          type="button"
+          label="ОЧИСТИТЬ ВСЁ"
+          bordered={true}
+          active={false}
+          onClick={() => setFilterActive(false)}
+          {...btnSize}
+        />
+      )}
 
       <p className="text-5xl text-[#514F4D]">СТЕНА ПАМЯТИ</p>
     </div>
