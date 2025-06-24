@@ -1,5 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import axios from "axios";
 import { useMembers } from "../context/MembersContext";
 import PanelButton from "../components/common/PanelButton";
 import medalIcon from "../assets/medalIcon.svg";
@@ -8,24 +9,58 @@ import unknownPerson from "../assets/unknownPerson.jpg";
 export default function HeroDetailPage() {
   const { state, dispatch } = useMembers();
   const { hasMore } = state;
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
-  const member = id ? state.membersMap[id] : null;
+  const member = id
+    ? state.members.find((m) => String(m.id) === String(id))
+    : null;
 
   if (!member) {
     return <div>Участник не найден</div>;
   }
 
-  const handleNext = () => {
-    if (hasMore) {
-      dispatch({ type: "INCREMENT_PAGE" });
+  const handleNext = async () => {
+    if (!id) return;
+
+    const currentIndex = state.members.findIndex(
+      (m) => String(m.id) === String(id)
+    );
+    const nextMember = state.members[currentIndex + 1];
+
+    if (nextMember) {
+      navigate(`/hero/${nextMember.id}`);
     } else {
-      console.log("Дальше данных нет");
+      const nextId = Number(id) + 1;
+
+      try {
+        const response = await axios.get(
+          `https://book-memory-sections-out.itlabs.top/api/members/${nextId}`
+        );
+        const fetchedMember = response.data;
+
+        if (fetchedMember && fetchedMember.id) {
+          dispatch({ type: "ADD_MEMBERS", payload: [fetchedMember] });
+          navigate(`/hero/${fetchedMember.id}`);
+        } else {
+          console.log("Следующий участник не найден");
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке следующего участника:", error);
+      }
     }
   };
 
   const btnSize = { width: "428px", height: "69px" };
+
+  const currentIndex = state.members.findIndex(
+    (m) => String(m.id) === String(id)
+  );
+  const nextMember = state.members[currentIndex + 1];
+
+  const isNextAvailable = Boolean(nextMember) || hasMore;
+
   return (
     <>
       <Helmet>
@@ -114,7 +149,8 @@ export default function HeroDetailPage() {
                   type="button"
                   icon={medalIcon}
                   label="CЛЕДУЮЩИЙ ГЕРОЙ"
-                  active={true}
+                  active={isNextAvailable}
+                  onClick={handleNext}
                   {...btnSize}
                 />
               </div>
@@ -124,7 +160,7 @@ export default function HeroDetailPage() {
               </p>
             </div>
           </div>
-          <div className="">
+          <div>
             <img
               src={member.image || unknownPerson}
               alt={member.name}
