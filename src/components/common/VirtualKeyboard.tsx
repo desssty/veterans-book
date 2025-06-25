@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import backspaceIcon from "../../assets/backspaceIcon.svg";
 import shiftIcon from "../../assets/shiftIcon.svg";
 import globeIcon from "../../assets/globeIcon.svg";
-import crossIcon from "../../assets/crossIcon.svg";
+import crossBallIcon from "../../assets/crossBallIcon.svg";
 import previousIcon from "../../assets/previousIcon.svg";
 import nextIcon from "../../assets/nextIcon.svg";
 
@@ -240,7 +240,7 @@ export default function VirtualKeyboard({
         onClick={onClose}
         className="bg-[#FAFAFA] w-[88px] h-[56px] mt-[20px] flex justify-center items-center rounded-[24px] hover:bg-[#EBEBEB] active:bg-[#EBEBEB]"
       >
-        <img src={crossIcon} alt="Закрыть" />
+        <img src={crossBallIcon} alt="Закрыть" />
       </button>
     </div>
   );

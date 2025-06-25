@@ -29,10 +29,10 @@ export default function MemberCard({
             : `url(${unknownPerson})`,
         }}
       >
-        <div className="absolute bottom-0 left-0 w-full h-[41%] bg-gradient-to-t from-black to-transparent pointer-events-none" />
-        <h2 className={`italic font-semibold text-white ${titleClass}`}>
+        <h2 className={`italic font-semibold text-white ${titleClass} z-10`}>
           {member.name}
         </h2>
+        <div className="absolute bottom-0 left-0 w-full h-[41%] bg-gradient-to-t from-black to-transparent pointer-events-none" />
       </div>
     </Link>
   );

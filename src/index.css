@@ -22,6 +22,7 @@
 
 body {
   margin: 0;
+  letter-spacing: 0.12em;
 }
 
 @keyframes dot-blink {

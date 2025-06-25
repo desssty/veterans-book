@@ -57,10 +57,7 @@ export default function SearchPage() {
         }`}
       >
         <div className="flex flex-col gap-[4rem] items-center">
-          <h1
-            className="flex flex-col items-center text-white text-[2.5rem] font-light mb-4"
-            style={{ letterSpacing: "0.12em" }}
-          >
+          <h1 className="flex flex-col items-center text-white text-[2.5rem] font-light mb-4">
             ПОИСК ПО БАЗЕ ГЕРОЕВ
           </h1>
           <div className="w-[45vw] h-[5rem] flex flex-row items-center border-0 border-b-[0.125rem] border-[#C1A886] bg-transparent focus:outline-none">

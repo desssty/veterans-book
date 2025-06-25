@@ -55,7 +55,7 @@ export default function PanelButton({
 
   const classNames = `${baseClasses} ${
     active ? activeClasses : inactiveClasses
-  } ${hoverActiveClasses} ${cursorClass}`;
+  } ${hoverActiveClasses} ${cursorClass} flex justify-center items-center`;
 
   const content = (
     <div className="flex flex-row gap-[15.5px] justify-center items-center">
