@@ -34,6 +34,11 @@ export default function SearchPage() {
       );
 
       console.log("Ответ от API:", response.data);
+
+      const filtersResponse = await axios.get(
+        "https://book-memory-sections-out.itlabs.top/api/members/filters/get"
+      );
+      console.log("Доступные фильтры:", filtersResponse.data);
       navigate("/");
     } catch (error) {
       console.error("Ошибка при поиске участника:", error);

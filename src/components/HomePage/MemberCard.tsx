@@ -22,13 +22,14 @@ export default function MemberCard({
   return (
     <Link to={`/hero/${member.id}`} className="block">
       <div
-        className={`bg-cover bg-center flex flex-col justify-end overflow-hidden cursor-pointer ${baseSizeClass}`}
+        className={`relative bg-cover bg-center flex flex-col justify-end overflow-hidden cursor-pointer ${baseSizeClass}`}
         style={{
           backgroundImage: member.image
             ? `url(${member.image})`
             : `url(${unknownPerson})`,
         }}
       >
+        <div className="absolute bottom-0 left-0 w-full h-[41%] bg-gradient-to-t from-black to-transparent pointer-events-none" />
         <h2 className={`italic font-semibold text-white ${titleClass}`}>
           {member.name}
         </h2>
