@@ -1,11 +1,17 @@
-import { useState } from "react";
 import PanelButton from "../common/PanelButton";
 import filterIcon from "./../../assets/filterIcon.svg";
 import searchWhiteIcon from "./../../assets/searchWhiteIcon.svg";
 import filterActiveIcon from "./../../assets/filterActiveIcon.svg";
 
-export default function MemberPanel() {
-  const [filterActive, setFilterActive] = useState(false);
+interface MemberPanelProps {
+  filterActive: boolean;
+  setFilterActive: (active: boolean) => void;
+}
+
+export default function MemberPanel({
+  filterActive,
+  setFilterActive,
+}: MemberPanelProps) {
   const btnSize = { width: "280px", height: "69px" };
 
   return (
