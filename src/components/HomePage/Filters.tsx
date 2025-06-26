@@ -74,16 +74,6 @@ export default function Filters({ filters, loading, onClose }: FiltersProps) {
     setSelectedRank(null);
     setSelectedLetter(null);
     setSelectedYears(null);
-
-    dispatch({
-      type: "SET_FILTERS",
-      payload: {
-        rank: [],
-        word: [],
-        yearStart: yearStart,
-        yearEnd: yearEnd,
-      },
-    });
   }
 
   return (
