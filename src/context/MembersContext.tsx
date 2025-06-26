@@ -27,6 +27,7 @@ const initialState: State = {
     word: [],
     yearStart: 0,
     yearEnd: 1946,
+    name: "",
   },
 };
 

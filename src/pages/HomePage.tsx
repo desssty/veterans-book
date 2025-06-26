@@ -130,6 +130,7 @@ export default function HomePage() {
           word: [],
           yearStart: safeFilters.yearStart,
           yearEnd: safeFilters.yearEnd,
+          name: "",
         },
       });
     }
@@ -147,6 +148,7 @@ export default function HomePage() {
           word: [],
           yearStart: safeFilters.yearStart,
           yearEnd: safeFilters.yearEnd,
+          name: "",
         },
       });
     }

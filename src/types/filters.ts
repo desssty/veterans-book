@@ -5,4 +5,5 @@ export interface FiltersData {
   word: string[];
   yearStart: Year;
   yearEnd: Year;
+  name: string;
 }
