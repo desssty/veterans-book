@@ -38,6 +38,10 @@ export default function HomePage() {
           params.append("word", activeFilters.word.join(","));
         }
 
+        if (activeFilters.name && activeFilters.name.trim() !== "") {
+          params.append("name", activeFilters.name.trim());
+        }
+
         const response = await axios.get(
           `https://book-memory-sections-out.itlabs.top/api/members?${params.toString()}`
         );

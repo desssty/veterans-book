@@ -15,7 +15,7 @@ type Action =
   | { type: "SET_MEMBERS"; payload: Member[] }
   | { type: "INCREMENT_PAGE" }
   | { type: "SET_HAS_MORE"; payload: boolean }
-  | { type: "SET_FILTERS"; payload: FiltersData }
+  | { type: "SET_FILTERS"; payload: Partial<FiltersData> }
   | { type: "RESET_PAGE_AND_MEMBERS" };
 
 const initialState: State = {
@@ -65,7 +65,10 @@ function reducer(state: State, action: Action): State {
     case "SET_FILTERS":
       return {
         ...state,
-        activeFilters: action.payload,
+        activeFilters: {
+          ...state.activeFilters,
+          ...action.payload,
+        },
       };
 
     case "RESET_PAGE_AND_MEMBERS":

@@ -3,8 +3,8 @@ import { Helmet } from "react-helmet";
 import VirtualKeyboard from "../components/common/VirtualKeyboard";
 import PanelButton from "../components/common/PanelButton";
 import searchWhiteIcon from "../assets/searchWhiteIcon.svg";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useMembers } from "../context/MembersContext";
 
 function isDesktop() {
   if (typeof navigator === "undefined") return true;
@@ -16,6 +16,7 @@ function isDesktop() {
 }
 
 export default function SearchPage() {
+  const { dispatch } = useMembers();
   const [value, setValue] = useState("");
   const [showKeyboard, setShowKeyboard] = useState(false);
   const btnSize = { width: "36rem", height: "4.3rem" };
@@ -29,16 +30,13 @@ export default function SearchPage() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.get(
-        `https://book-memory-sections-out.itlabs.top/api/members?name=${value}`
-      );
+      dispatch({ type: "RESET_PAGE_AND_MEMBERS" });
 
-      console.log("Ответ от API:", response.data);
+      dispatch({
+        type: "SET_FILTERS",
+        payload: { name: value },
+      });
 
-      const filtersResponse = await axios.get(
-        "https://book-memory-sections-out.itlabs.top/api/members/filters/get"
-      );
-      console.log("Доступные фильтры:", filtersResponse.data);
       navigate("/");
     } catch (error) {
       console.error("Ошибка при поиске участника:", error);
