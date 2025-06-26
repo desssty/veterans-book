@@ -11,6 +11,8 @@ export default function HomePage() {
   const { members, page, hasMore } = state;
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const [filtersActive, setFiltersActive] = useState(false);
+  const [filters, setFilters] = useState(null);
+  const [filtersLoading, setFiltersLoading] = useState(false);
 
   useEffect(() => {
     async function fetchMembers() {
@@ -68,6 +70,27 @@ export default function HomePage() {
     };
   }, [filtersActive]);
 
+  useEffect(() => {
+    async function fetchFilters() {
+      setFiltersLoading(true);
+      try {
+        const filtersResponse = await axios.get(
+          "https://book-memory-sections-out.itlabs.top/api/members/filters/get"
+        );
+        console.log(filtersResponse.data);
+        setFilters(filtersResponse.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке фильтров:", error);
+      } finally {
+        setFiltersLoading(false);
+      }
+    }
+
+    if (filtersActive && !filters) {
+      fetchFilters();
+    }
+  }, [filtersActive, filters]);
+
   return (
     <>
       <Helmet>
@@ -82,7 +105,13 @@ export default function HomePage() {
         hasMore={hasMore}
         loaderRef={loaderRef}
       />
-      {filtersActive && <Filters />}
+      {filtersActive && (
+        <Filters
+          filters={filters}
+          loading={filtersLoading}
+          onClose={() => setFiltersActive(false)}
+        />
+      )}
     </>
   );
 }

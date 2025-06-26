@@ -12,7 +12,7 @@ export default function MemberPanel({
   filterActive,
   setFilterActive,
 }: MemberPanelProps) {
-  const btnSize = { width: "280px", height: "69px" };
+  const btnSize = { width: "17.5rem" };
 
   return (
     <div className="flex flex-row pl-[5rem] mb-[2.5rem] items-center gap-[2rem]">

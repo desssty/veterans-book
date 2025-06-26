@@ -8,7 +8,7 @@ export default function DateRangeSlider() {
   const [values, setValues] = useState<[number, number]>([MIN, MAX]);
 
   return (
-    <div className="w-full max-w-sm p-4 flex flex-col items-start">
+    <div className="w-full flex flex-col items-start">
       <h3 className="text-[#514F4D] text-2xl font-light mb-4">ДАТА РОЖДЕНИЯ</h3>
 
       <Range
@@ -33,15 +33,19 @@ export default function DateRangeSlider() {
             {children}
           </div>
         )}
-        renderThumb={({ props }) => (
-          <div
-            {...props}
-            className="w-5 h-5 rounded-full bg-[#CF3337] border-none cursor-pointer relative "
-          />
-        )}
+        renderThumb={({ props }) => {
+          const { key, ...restProps } = props;
+          return (
+            <div
+              key={key}
+              {...restProps}
+              className="w-5 h-5 rounded-full bg-[#CF3337] border-none cursor-pointer relative"
+            />
+          );
+        }}
       />
 
-      <div className="flex w-full justify-between gap-4 mt-8">
+      <div className="flex w-full justify-between gap-5 mt-8 text-[1.125rem] ">
         <input
           type="number"
           min={MIN}
@@ -54,7 +58,7 @@ export default function DateRangeSlider() {
             );
             setValues([val, values[1]]);
           }}
-          className="flex-1 bg-transparent border-2 border-[#514F4D] text-[#514F4D] p-4 text-center rounded focus:outline-none"
+          className="flex-1 bg-transparent border-2 border-[#514F4D] text-[#514F4D] p-4 pl-4 rounded focus:outline-none"
         />
         <input
           type="number"
@@ -68,7 +72,7 @@ export default function DateRangeSlider() {
             );
             setValues([values[0], val]);
           }}
-          className="flex-1 bg-transparent border-2 border-[#514F4D] text-[#514F4D] p-4 text-center rounded focus:outline-none"
+          className="flex-1 bg-transparent border-2 border-[#514F4D] text-[#514F4D] p-4 pl-4 rounded focus:outline-none"
         />
       </div>
     </div>

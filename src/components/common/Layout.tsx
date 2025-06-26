@@ -1,7 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import backgroundBattle from "../../assets/backgroundBattle.png";
-import { INVERSEPATHS } from "../../constants/paths";
+
+const INVERSEPATHS = ["/search"];
 
 export default function Layout() {
   const location = useLocation();

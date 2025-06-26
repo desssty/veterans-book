@@ -22,8 +22,8 @@ export default function PanelButton({
   label,
   onClick,
   bordered = true,
-  width = "280px",
-  height = "69px",
+  width = "17.5rem",
+  height = "4.3125rem",
   transparentWhite = false,
 }: PanelButtonProps) {
   const baseClasses = `flex justify-center items-center text-[1.125rem] text-light no-underline select-none transition-colors duration-300 ease-in-out`;
@@ -58,8 +58,8 @@ export default function PanelButton({
   } ${hoverActiveClasses} ${cursorClass} flex justify-center items-center`;
 
   const content = (
-    <div className="flex flex-row gap-[15.5px] justify-center items-center">
-      {icon && <img src={icon} alt={label} width="32px" height="32px" />}
+    <div className="flex flex-row gap-[0.96875rem] justify-center items-center">
+      {icon && <img src={icon} alt={label} width="2rem" height="2rem" />}
       <p className="m-0">{label}</p>
     </div>
   );
