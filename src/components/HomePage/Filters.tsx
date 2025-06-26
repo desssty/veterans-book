@@ -5,13 +5,7 @@ import AlphabetFilter from "./AlphabetFilter";
 import PanelButton from "../common/PanelButton";
 import backgroundFilters from "../../assets/backgroundFilters.jpg";
 import crossIcon from "../../assets/crossIcon.svg";
-
-interface FiltersData {
-  rank: string[];
-  yearStart: number;
-  yearEnd: number;
-  word: string[];
-}
+import type { FiltersData } from "../../types/filters";
 
 interface FiltersProps {
   filters: FiltersData | null;

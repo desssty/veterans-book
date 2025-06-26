@@ -77,7 +77,6 @@ export default function HomePage() {
         const filtersResponse = await axios.get(
           "https://book-memory-sections-out.itlabs.top/api/members/filters/get"
         );
-        console.log(filtersResponse.data);
         setFilters(filtersResponse.data);
       } catch (error) {
         console.error("Ошибка при загрузке фильтров:", error);

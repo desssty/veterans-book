@@ -2,11 +2,19 @@ import React, { createContext, useReducer, useContext } from "react";
 import type { ReactNode } from "react";
 import type { Member } from "../types/member";
 
+type FiltersData = {
+  yearStart: number;
+  yearEnd: number;
+  word: string[];
+  rank: string[];
+};
+
 type State = {
   members: Member[];
   membersMap: Record<string, Member>;
   page: number;
   hasMore: boolean;
+  activeFilters: FiltersData;
 };
 
 type Action =
@@ -71,6 +79,7 @@ export function MembersProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useMembers() {
   const context = useContext(MembersContext);
   if (!context) {
