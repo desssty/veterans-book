@@ -59,7 +59,7 @@ export default function PanelButton({
 
   const content = (
     <div className="flex flex-row gap-[0.96875rem] justify-center items-center">
-      {icon && <img src={icon} alt={label} width="2rem" height="2rem" />}
+      {icon && <img src={icon} alt={label} className="w-8 h-8" />}
       <p className="m-0">{label}</p>
     </div>
   );
