@@ -1,6 +1,8 @@
+export type Year = number | typeof NaN;
+
 export interface FiltersData {
   rank: string[];
-  yearStart: number;
-  yearEnd: number;
   word: string[];
+  yearStart: Year;
+  yearEnd: Year;
 }

@@ -1,13 +1,7 @@
 import React, { createContext, useReducer, useContext } from "react";
 import type { ReactNode } from "react";
 import type { Member } from "../types/member";
-
-type FiltersData = {
-  yearStart: number;
-  yearEnd: number;
-  word: string[];
-  rank: string[];
-};
+import type { FiltersData } from "../types/filters";
 
 type State = {
   members: Member[];
@@ -27,6 +21,12 @@ const initialState: State = {
   page: 1,
   hasMore: true,
   membersMap: {},
+  activeFilters: {
+    rank: [],
+    word: [],
+    yearStart: NaN,
+    yearEnd: NaN,
+  },
 };
 
 function reducer(state: State, action: Action): State {

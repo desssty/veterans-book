@@ -10,7 +10,13 @@ export default function DateRangeSlider({
   yearStart,
   yearEnd,
 }: DateRangeSliderProps) {
-  const [values, setValues] = useState<[number, number]>([yearStart, yearEnd]);
+  const safeYearStart = Number.isNaN(yearStart) ? 0 : yearStart;
+  const safeYearEnd = Number.isNaN(yearEnd) ? 1946 : yearEnd;
+
+  const [values, setValues] = useState<[number, number]>([
+    safeYearStart,
+    safeYearEnd,
+  ]);
 
   return (
     <div className="w-full flex flex-col items-start">
