@@ -25,8 +25,8 @@ const initialState: State = {
   activeFilters: {
     rank: [],
     word: [],
-    yearStart: NaN,
-    yearEnd: NaN,
+    yearStart: 0,
+    yearEnd: 1946,
   },
 };
 

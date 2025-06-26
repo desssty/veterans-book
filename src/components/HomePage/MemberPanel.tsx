@@ -4,15 +4,15 @@ import searchWhiteIcon from "./../../assets/searchWhiteIcon.svg";
 import filterActiveIcon from "./../../assets/filterActiveIcon.svg";
 
 interface MemberPanelProps {
-  filterActive: boolean;
-  setFilterActive: (active: boolean) => void;
+  filtersOpen: boolean;
+  setFiltersOpen: (open: boolean) => void;
   clearFilters: () => void;
   filtersAreActive: boolean;
 }
 
 export default function MemberPanel({
-  filterActive,
-  setFilterActive,
+  filtersOpen,
+  setFiltersOpen,
   clearFilters,
   filtersAreActive,
 }: MemberPanelProps) {
@@ -29,29 +29,29 @@ export default function MemberPanel({
         {...btnSize}
       />
 
-      {!filterActive && (
+      {!filtersOpen && !filtersAreActive && (
         <PanelButton
           type="button"
           icon={filterIcon}
           label="ФИЛЬТР"
           active={false}
-          onClick={() => setFilterActive(true)}
+          onClick={() => setFiltersOpen(true)}
           {...btnSize}
         />
       )}
 
-      {filterActive && filtersAreActive && (
+      {filtersAreActive && (
         <PanelButton
           type="button"
           icon={filterActiveIcon}
           label="ФИЛЬТР АКТИВЕН"
           active={true}
-          onClick={() => setFilterActive(false)}
+          onClick={() => setFiltersOpen(!filtersOpen)}
           {...btnSize}
         />
       )}
 
-      {filterActive && filtersAreActive && (
+      {filtersAreActive && (
         <PanelButton
           type="button"
           label="ОЧИСТИТЬ ВСЁ"
@@ -59,7 +59,7 @@ export default function MemberPanel({
           active={false}
           onClick={() => {
             clearFilters();
-            setFilterActive(false);
+            setFiltersOpen(false);
           }}
           {...btnSize}
         />

@@ -46,24 +46,51 @@ export default function HeroDetailPage() {
 
     if (nextMember) {
       navigate(`/hero/${nextMember.id}`);
-    } else {
-      const nextId = Number(id) + 1;
+      return;
+    }
 
-      try {
-        const response = await axios.get(
-          `https://book-memory-sections-out.itlabs.top/api/members/${nextId}`
-        );
-        const fetchedMember = response.data;
+    if (!hasMore) {
+      console.log("Больше героев нет");
+      return;
+    }
 
-        if (fetchedMember && fetchedMember.id) {
-          dispatch({ type: "ADD_MEMBERS", payload: [fetchedMember] });
-          navigate(`/hero/${fetchedMember.id}`);
-        } else {
-          console.log("Следующий участник не найден");
-        }
-      } catch (error) {
-        console.error("Ошибка при загрузке следующего участника:", error);
+    try {
+      const params = new URLSearchParams();
+      params.append("page", (state.page + 1).toString());
+      params.append("itemsPerPage", "13");
+
+      const { activeFilters } = state;
+
+      if (activeFilters.yearStart && !isNaN(activeFilters.yearStart)) {
+        params.append("yearStart", activeFilters.yearStart.toString());
       }
+      if (activeFilters.yearEnd && !isNaN(activeFilters.yearEnd)) {
+        params.append("yearEnd", activeFilters.yearEnd.toString());
+      }
+      if (activeFilters.rank.length > 0) {
+        params.append("ranks", activeFilters.rank.join(","));
+      }
+      if (activeFilters.word.length > 0) {
+        params.append("word", activeFilters.word.join(","));
+      }
+
+      const response = await axios.get(
+        `https://book-memory-sections-out.itlabs.top/api/members?${params.toString()}`
+      );
+
+      const newMembers = response.data;
+
+      if (newMembers.length > 0) {
+        dispatch({ type: "ADD_MEMBERS", payload: newMembers });
+        dispatch({ type: "INCREMENT_PAGE" });
+
+        navigate(`/hero/${newMembers[0].id}`);
+      } else {
+        dispatch({ type: "SET_HAS_MORE", payload: false });
+        console.log("Следующих героев по фильтрам нет");
+      }
+    } catch (error) {
+      console.error("Ошибка при загрузке следующих участников:", error);
     }
   };
 

@@ -66,14 +66,13 @@ export default function Filters({ filters, loading, onClose }: FiltersProps) {
     };
 
     dispatch({ type: "SET_FILTERS", payload: newFilters });
-    console.log(state.activeFilters);
     onClose();
   }
 
   function handleClearFilters() {
     setSelectedRank(null);
     setSelectedLetter(null);
-    setSelectedYears(null);
+    setSelectedYears([filters?.yearStart ?? 0, filters?.yearEnd ?? 1946]);
   }
 
   return (

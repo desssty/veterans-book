@@ -82,7 +82,9 @@ export default function DateRangeSlider({
               Math.max(Number(e.target.value) || yearStart, yearStart),
               values[1] - 1
             );
-            setValues([val, values[1]]);
+            const newRange: [number, number] = [val, values[1]];
+            setValues(newRange);
+            onChangeYears(newRange);
           }}
           className="flex-1 bg-transparent border-2 border-[#514F4D] text-[#514F4D] p-4 pl-4 rounded focus:outline-none"
         />
@@ -96,7 +98,9 @@ export default function DateRangeSlider({
               Math.min(Number(e.target.value) || yearEnd, yearEnd),
               values[0] + 1
             );
-            setValues([values[0], val]);
+            const newRange: [number, number] = [val, values[1]];
+            setValues(newRange);
+            onChangeYears(newRange);
           }}
           className="flex-1 bg-transparent border-2 border-[#514F4D] text-[#514F4D] p-4 pl-4 rounded focus:outline-none"
         />

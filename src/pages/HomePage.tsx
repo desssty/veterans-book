@@ -11,12 +11,11 @@ export default function HomePage() {
   const { state, dispatch } = useMembers();
   const { members, page, hasMore, activeFilters } = state;
   const loaderRef = useRef<HTMLDivElement | null>(null);
-  const [filtersActive, setFiltersActive] = useState(false);
-  const [filters, setFilters] = useState(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [filters, setFilters] = useState<FiltersData | null>(null);
   const [filtersLoading, setFiltersLoading] = useState(false);
   const [loadingMembers, setLoadingMembers] = useState(false);
-
-  const filtersAreActive = isFiltersActive(state.activeFilters);
+  const filtersAreActive = isFiltersActive(state.activeFilters, filters);
 
   useEffect(() => {
     async function fetchMembers() {
@@ -91,7 +90,7 @@ export default function HomePage() {
   }, [activeFilters, dispatch]);
 
   useEffect(() => {
-    if (filtersActive) {
+    if (filtersOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -99,7 +98,7 @@ export default function HomePage() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [filtersActive]);
+  }, [filtersOpen]);
 
   useEffect(() => {
     async function fetchFilters() {
@@ -116,30 +115,55 @@ export default function HomePage() {
       }
     }
 
-    if (filtersActive && !filters) {
+    if (filtersOpen && !filters) {
       fetchFilters();
     }
-  }, [filtersActive, filters]);
+  }, [filtersOpen, filters]);
 
   function clearFilters() {
-    dispatch({
-      type: "SET_FILTERS",
-      payload: {
-        rank: [],
-        word: [],
-        yearStart: NaN,
-        yearEnd: NaN,
-      },
-    });
+    if (filters) {
+      const safeFilters = filters as FiltersData;
+      dispatch({
+        type: "SET_FILTERS",
+        payload: {
+          rank: [],
+          word: [],
+          yearStart: safeFilters.yearStart,
+          yearEnd: safeFilters.yearEnd,
+        },
+      });
+    }
+
     dispatch({ type: "RESET_PAGE_AND_MEMBERS" });
   }
 
-  function isFiltersActive(filters: FiltersData) {
-    const { rank, word, yearStart, yearEnd } = filters;
+  useEffect(() => {
+    if (filters) {
+      const safeFilters = filters as FiltersData;
+      dispatch({
+        type: "SET_FILTERS",
+        payload: {
+          rank: [],
+          word: [],
+          yearStart: safeFilters.yearStart,
+          yearEnd: safeFilters.yearEnd,
+        },
+      });
+    }
+  }, [filters, dispatch]);
+
+  function isFiltersActive(
+    filtersData: FiltersData,
+    filters: FiltersData | null
+  ) {
+    const defaultYearStart = filters?.yearStart ?? 0;
+    const defaultYearEnd = filters?.yearEnd ?? 1946;
+    const { rank, word, yearStart, yearEnd } = filtersData;
     return (
       (rank && rank.length > 0) ||
       (word && word.length > 0) ||
-      (!isNaN(yearStart) && !isNaN(yearEnd))
+      yearStart !== defaultYearStart ||
+      yearEnd !== defaultYearEnd
     );
   }
 
@@ -149,8 +173,8 @@ export default function HomePage() {
         <title>Стена Памяти</title>
       </Helmet>
       <MemberPanel
-        filterActive={filtersActive}
-        setFilterActive={setFiltersActive}
+        filtersOpen={filtersOpen}
+        setFiltersOpen={setFiltersOpen}
         clearFilters={clearFilters}
         filtersAreActive={filtersAreActive}
       />
@@ -159,11 +183,11 @@ export default function HomePage() {
         hasMore={hasMore}
         loaderRef={loaderRef}
       />
-      {filtersActive && (
+      {filtersOpen && (
         <Filters
           filters={filters}
           loading={filtersLoading}
-          onClose={() => setFiltersActive(false)}
+          onClose={() => setFiltersOpen(false)}
         />
       )}
     </>
