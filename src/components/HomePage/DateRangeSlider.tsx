@@ -1,22 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Range, getTrackBackground } from "react-range";
 
 interface DateRangeSliderProps {
   yearStart: number;
   yearEnd: number;
+  selectedYears: [number, number] | null;
+  onChangeYears: (years: [number, number]) => void;
 }
 
 export default function DateRangeSlider({
   yearStart,
   yearEnd,
+  selectedYears,
+  onChangeYears,
 }: DateRangeSliderProps) {
   const safeYearStart = Number.isNaN(yearStart) ? 0 : yearStart;
   const safeYearEnd = Number.isNaN(yearEnd) ? 1946 : yearEnd;
 
-  const [values, setValues] = useState<[number, number]>([
-    safeYearStart,
-    safeYearEnd,
-  ]);
+  const [values, setValues] = useState<[number, number]>(
+    selectedYears || [safeYearStart, safeYearEnd]
+  );
+
+  useEffect(() => {
+    if (selectedYears) {
+      setValues(selectedYears);
+    }
+  }, [selectedYears]);
+
+  function handleChange(vals: number[]) {
+    const newValues: [number, number] = [vals[0], vals[1]];
+    setValues(newValues);
+    onChangeYears(newValues);
+  }
 
   return (
     <div className="w-full flex flex-col items-start">
@@ -27,7 +42,7 @@ export default function DateRangeSlider({
         step={1}
         min={yearStart}
         max={yearEnd}
-        onChange={(vals) => setValues([vals[0], vals[1]])}
+        onChange={handleChange}
         renderTrack={({ props, children }) => (
           <div
             {...props}

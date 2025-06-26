@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import PanelButton from "../common/PanelButton";
 
 interface AlphabetFilterProps {
@@ -11,10 +12,18 @@ export default function AlphabetFilter({
   selectedLetter,
   onSelectLetter,
 }: AlphabetFilterProps) {
-  const btnSize = { width: "2.5rem", height: "2.5rem" };
+  const [localSelectedLetter, setLocalSelectedLetter] = useState<string | null>(
+    selectedLetter
+  );
+
+  useEffect(() => {
+    setLocalSelectedLetter(selectedLetter);
+  }, [selectedLetter]);
 
   function handleClick(letter: string) {
-    onSelectLetter(selectedLetter === letter ? null : letter);
+    const newLetter = localSelectedLetter === letter ? null : letter;
+    setLocalSelectedLetter(newLetter);
+    onSelectLetter(newLetter);
   }
 
   return (
@@ -22,7 +31,7 @@ export default function AlphabetFilter({
       <h3 className="text-[#51504D] text-2xl font-light ">ПО БУКВАМ</h3>
       <div className="grid grid-cols-7 gap-4">
         {alphabet.map((letter) => {
-          const active = selectedLetter === letter;
+          const active = localSelectedLetter === letter;
           return (
             <PanelButton
               key={letter}
@@ -30,7 +39,8 @@ export default function AlphabetFilter({
               label={letter}
               active={active}
               onClick={() => handleClick(letter)}
-              {...btnSize}
+              width="2.5rem"
+              height="2.5rem"
             />
           );
         })}

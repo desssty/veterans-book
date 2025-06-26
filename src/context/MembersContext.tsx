@@ -14,7 +14,8 @@ type State = {
 type Action =
   | { type: "ADD_MEMBERS"; payload: Member[] }
   | { type: "INCREMENT_PAGE" }
-  | { type: "SET_HAS_MORE"; payload: boolean };
+  | { type: "SET_HAS_MORE"; payload: boolean }
+  | { type: "SET_FILTERS"; payload: FiltersData };
 
 const initialState: State = {
   members: [],
@@ -58,6 +59,12 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         hasMore: action.payload,
+      };
+
+    case "SET_FILTERS":
+      return {
+        ...state,
+        activeFilters: action.payload,
       };
     default:
       return state;

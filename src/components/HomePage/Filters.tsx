@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DateRangeSlider from "./DateRangeSlider";
 import RankFilter from "./RankFilter";
 import AlphabetFilter from "./AlphabetFilter";
@@ -6,6 +6,7 @@ import PanelButton from "../common/PanelButton";
 import backgroundFilters from "../../assets/backgroundFilters.jpg";
 import crossIcon from "../../assets/crossIcon.svg";
 import type { FiltersData } from "../../types/filters";
+import { useMembers } from "../../context/MembersContext";
 
 interface FiltersProps {
   filters: FiltersData | null;
@@ -14,8 +15,27 @@ interface FiltersProps {
 }
 
 export default function Filters({ filters, loading, onClose }: FiltersProps) {
+  const { state, dispatch } = useMembers();
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   const [selectedRank, setSelectedRank] = useState<string | null>(null);
+  const [selectedYears, setSelectedYears] = useState<[number, number] | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (state.activeFilters) {
+      setSelectedLetter(
+        state.activeFilters.word.length > 0 ? state.activeFilters.word[0] : null
+      );
+      setSelectedRank(
+        state.activeFilters.rank.length > 0 ? state.activeFilters.rank[0] : null
+      );
+      setSelectedYears([
+        state.activeFilters.yearStart,
+        state.activeFilters.yearEnd,
+      ]);
+    }
+  }, [state.activeFilters]);
 
   if (loading) {
     return (
@@ -32,11 +52,39 @@ export default function Filters({ filters, loading, onClose }: FiltersProps) {
       </div>
     );
   }
-
   const alphabet = filters.word;
   const ranks = filters.rank;
   const yearStart = filters.yearStart;
   const yearEnd = filters.yearEnd;
+
+  function handleApplyFilters() {
+    const newFilters: FiltersData = {
+      word: selectedLetter ? [selectedLetter] : [],
+      rank: selectedRank ? [selectedRank] : [],
+      yearStart: selectedYears ? selectedYears[0] : yearStart,
+      yearEnd: selectedYears ? selectedYears[1] : yearEnd,
+    };
+
+    dispatch({ type: "SET_FILTERS", payload: newFilters });
+    console.log(state.activeFilters);
+    onClose();
+  }
+
+  function handleClearFilters() {
+    setSelectedRank(null);
+    setSelectedLetter(null);
+    setSelectedYears(null);
+
+    dispatch({
+      type: "SET_FILTERS",
+      payload: {
+        rank: [],
+        word: [],
+        yearStart: yearStart,
+        yearEnd: yearEnd,
+      },
+    });
+  }
 
   return (
     <div className="fixed inset-0 z-50">
@@ -65,7 +113,12 @@ export default function Filters({ filters, loading, onClose }: FiltersProps) {
           </button>
         </div>
 
-        <DateRangeSlider yearStart={yearStart} yearEnd={yearEnd} />
+        <DateRangeSlider
+          yearStart={yearStart}
+          yearEnd={yearEnd}
+          selectedYears={selectedYears}
+          onChangeYears={setSelectedYears}
+        />
 
         <RankFilter
           ranks={ranks}
@@ -85,6 +138,7 @@ export default function Filters({ filters, loading, onClose }: FiltersProps) {
             active={true}
             label="ПРИМЕНИТЬ"
             width="24.25rem"
+            onClick={handleApplyFilters}
           />
           <PanelButton
             type="button"
@@ -92,10 +146,7 @@ export default function Filters({ filters, loading, onClose }: FiltersProps) {
             bordered={true}
             active={false}
             width="24.25rem"
-            onClick={() => {
-              setSelectedRank(null);
-              setSelectedLetter(null);
-            }}
+            onClick={handleClearFilters}
           />
         </div>
       </div>

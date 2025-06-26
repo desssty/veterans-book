@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface RankFilterProps {
   ranks: string[];
@@ -12,9 +12,18 @@ export default function RankFilter({
   onSelectRank,
 }: RankFilterProps) {
   const [showAllRanks, setShowAllRanks] = useState(false);
+  const [localSelectedRank, setLocalSelectedRank] = useState<string | null>(
+    selectedRank
+  );
+
+  useEffect(() => {
+    setLocalSelectedRank(selectedRank);
+  }, [selectedRank]);
 
   function handleRankClick(rank: string) {
-    onSelectRank(selectedRank === rank ? null : rank);
+    const newRank = localSelectedRank === rank ? null : rank;
+    setLocalSelectedRank(newRank);
+    onSelectRank(newRank);
   }
 
   return (
@@ -22,7 +31,7 @@ export default function RankFilter({
       <h3 className="text-[#51504D] text-2xl font-light ">ЗВАНИЕ</h3>
       <div className="flex flex-col gap-4 w-full">
         {(showAllRanks ? ranks : ranks.slice(0, 3)).map((r) => {
-          const checked = selectedRank === r;
+          const checked = localSelectedRank === r;
           return (
             <label
               key={r}
