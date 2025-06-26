@@ -6,17 +6,20 @@ import filterActiveIcon from "./../../assets/filterActiveIcon.svg";
 interface MemberPanelProps {
   filterActive: boolean;
   setFilterActive: (active: boolean) => void;
+  clearFilters: () => void;
+  filtersAreActive: boolean;
 }
 
 export default function MemberPanel({
   filterActive,
   setFilterActive,
+  clearFilters,
+  filtersAreActive,
 }: MemberPanelProps) {
   const btnSize = { width: "17.5rem" };
 
   return (
     <div className="flex flex-row pl-[5rem] mb-[2.5rem] items-center gap-[2rem]">
-      {/* Поиск */}
       <PanelButton
         type="link"
         href="/search"
@@ -26,7 +29,6 @@ export default function MemberPanel({
         {...btnSize}
       />
 
-      {/* Фильтр обычный */}
       {!filterActive && (
         <PanelButton
           type="button"
@@ -38,8 +40,7 @@ export default function MemberPanel({
         />
       )}
 
-      {/* Фильтр активен */}
-      {filterActive && (
+      {filterActive && filtersAreActive && (
         <PanelButton
           type="button"
           icon={filterActiveIcon}
@@ -50,14 +51,16 @@ export default function MemberPanel({
         />
       )}
 
-      {/* Очистить всё */}
-      {filterActive && (
+      {filterActive && filtersAreActive && (
         <PanelButton
           type="button"
           label="ОЧИСТИТЬ ВСЁ"
           bordered={true}
           active={false}
-          onClick={() => setFilterActive(false)}
+          onClick={() => {
+            clearFilters();
+            setFilterActive(false);
+          }}
           {...btnSize}
         />
       )}
