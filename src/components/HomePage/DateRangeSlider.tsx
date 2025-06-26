@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { Range, getTrackBackground } from "react-range";
 
-const MIN = 1900;
-const MAX = 2025;
+interface DateRangeSliderProps {
+  yearStart: number;
+  yearEnd: number;
+}
 
-export default function DateRangeSlider() {
-  const [values, setValues] = useState<[number, number]>([MIN, MAX]);
+export default function DateRangeSlider({
+  yearStart,
+  yearEnd,
+}: DateRangeSliderProps) {
+  const [values, setValues] = useState<[number, number]>([yearStart, yearEnd]);
 
   return (
     <div className="w-full flex flex-col items-start">
@@ -14,8 +19,8 @@ export default function DateRangeSlider() {
       <Range
         values={values}
         step={1}
-        min={MIN}
-        max={MAX}
+        min={yearStart}
+        max={yearEnd}
         onChange={(vals) => setValues([vals[0], vals[1]])}
         renderTrack={({ props, children }) => (
           <div
@@ -25,8 +30,8 @@ export default function DateRangeSlider() {
               background: getTrackBackground({
                 values,
                 colors: ["#514F4D", "#CF3337", "#514F4D"],
-                min: MIN,
-                max: MAX,
+                min: yearStart,
+                max: yearEnd,
               }),
             }}
           >
@@ -48,12 +53,12 @@ export default function DateRangeSlider() {
       <div className="flex w-full justify-between gap-5 mt-8 text-[1.125rem] ">
         <input
           type="number"
-          min={MIN}
+          min={yearStart}
           max={values[1] - 1}
           value={values[0]}
           onChange={(e) => {
             const val = Math.min(
-              Math.max(Number(e.target.value) || MIN, MIN),
+              Math.max(Number(e.target.value) || yearStart, yearStart),
               values[1] - 1
             );
             setValues([val, values[1]]);
@@ -63,11 +68,11 @@ export default function DateRangeSlider() {
         <input
           type="number"
           min={values[0] + 1}
-          max={MAX}
+          max={yearEnd}
           value={values[1]}
           onChange={(e) => {
             const val = Math.max(
-              Math.min(Number(e.target.value) || MAX, MAX),
+              Math.min(Number(e.target.value) || yearEnd, yearEnd),
               values[0] + 1
             );
             setValues([values[0], val]);
