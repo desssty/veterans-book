@@ -94,8 +94,6 @@ export default function HomePage() {
 
   useEffect(() => {
     dispatch({ type: "RESET_PAGE_AND_MEMBERS" });
-
-    console.log(activeFilters);
   }, [activeFilters, dispatch]);
 
   useEffect(() => {

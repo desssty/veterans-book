@@ -18,23 +18,31 @@ export default function MembersScroll({
   return (
     <div className="relative w-full">
       <div ref={scrollContainerRef} className="overflow-x-auto no-scrollbar">
-        <div
-          className="flex gap-y-4 gap-x-3 px-[5rem] w-max"
-          style={{ scrollbarWidth: "thin" }}
-        >
-          {members[0] && <MemberCard member={members[0]} firstInRow={true} />}
-
+        {members.length === 0 ? (
+          <Loading text="Нет данных для отображения" />
+        ) : (
           <div
-            className="grid grid-rows-2 gap-y-4 gap-x-3 auto-cols-max"
-            style={{ gridAutoFlow: "column" }}
+            className="flex gap-y-4 gap-x-3 px-[5rem] w-max"
+            style={{ scrollbarWidth: "thin" }}
           >
-            {members.slice(1).map((member) => (
-              <MemberCard key={member.id} member={member} firstInRow={false} />
-            ))}
-          </div>
+            {members[0] && <MemberCard member={members[0]} firstInRow={true} />}
 
-          {hasMore && <Loading text={"Загружаю"} ref={loaderRef} />}
-        </div>
+            <div
+              className="grid grid-rows-2 gap-y-4 gap-x-3 auto-cols-max"
+              style={{ gridAutoFlow: "column" }}
+            >
+              {members.slice(1).map((member) => (
+                <MemberCard
+                  key={member.id}
+                  member={member}
+                  firstInRow={false}
+                />
+              ))}
+            </div>
+
+            {hasMore && <Loading text={"Загружаю"} ref={loaderRef} />}
+          </div>
+        )}
       </div>
 
       <div className="absolute left-0 top-0 h-full w-[5rem] pointer-events-none bg-gradient-to-r from-[#E4D4B8] to-transparent z-10" />

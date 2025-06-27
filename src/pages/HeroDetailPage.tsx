@@ -50,7 +50,6 @@ export default function HeroDetailPage() {
     }
 
     if (!hasMore) {
-      console.log("Больше героев нет");
       return;
     }
 
@@ -87,7 +86,6 @@ export default function HeroDetailPage() {
         navigate(`/hero/${newMembers[0].id}`);
       } else {
         dispatch({ type: "SET_HAS_MORE", payload: false });
-        console.log("Следующих героев по фильтрам нет");
       }
     } catch (error) {
       console.error("Ошибка при загрузке следующих участников:", error);
