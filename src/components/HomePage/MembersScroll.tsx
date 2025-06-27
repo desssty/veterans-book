@@ -6,16 +6,18 @@ interface MembersScrollProps {
   members: Member[];
   hasMore: boolean;
   loaderRef: React.RefObject<HTMLDivElement | null>;
+  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function MembersScroll({
   members,
   hasMore,
   loaderRef,
+  scrollContainerRef,
 }: MembersScrollProps) {
   return (
     <div className="relative w-full">
-      <div className="overflow-x-auto">
+      <div ref={scrollContainerRef} className="overflow-x-auto no-scrollbar">
         <div
           className="flex gap-y-4 gap-x-3 px-[5rem] w-max"
           style={{ scrollbarWidth: "thin" }}

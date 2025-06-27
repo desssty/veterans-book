@@ -9,6 +9,9 @@ interface MemberPanelProps {
   setFiltersOpen: (open: boolean) => void;
   clearFilters: () => void;
   filtersAreActive: boolean;
+  onScrollChange: (value: number) => void;
+  scrollPosition: number;
+  maxScroll: number;
 }
 
 export default function MemberPanel({
@@ -16,6 +19,9 @@ export default function MemberPanel({
   setFiltersOpen,
   clearFilters,
   filtersAreActive,
+  onScrollChange,
+  scrollPosition,
+  maxScroll,
 }: MemberPanelProps) {
   const btnSize = { width: "17.5rem" };
   const { state } = useMembers();
@@ -77,6 +83,14 @@ export default function MemberPanel({
           <span className="text-4xl text-gray-500">{members.length}</span>
         )}
       </p>
+      <input
+        type="range"
+        min={0}
+        max={maxScroll}
+        value={scrollPosition}
+        onChange={(e) => onScrollChange(Number(e.target.value))}
+        style={{ width: "300px" }}
+      />
     </div>
   );
 }

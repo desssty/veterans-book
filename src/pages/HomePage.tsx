@@ -16,6 +16,9 @@ export default function HomePage() {
   const [filtersLoading, setFiltersLoading] = useState(false);
   const [loadingMembers, setLoadingMembers] = useState(false);
   const filtersAreActive = isFiltersActive(state.activeFilters, filters);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
 
   useEffect(() => {
     async function fetchMembers() {
@@ -172,6 +175,39 @@ export default function HomePage() {
     );
   }
 
+  useEffect(() => {
+    const scrollEl = scrollContainerRef.current;
+    if (!scrollEl) return;
+
+    function handleScroll() {
+      if (!scrollEl) return;
+      setScrollPosition(scrollEl.scrollLeft);
+      setMaxScroll(scrollEl.scrollWidth - scrollEl.clientWidth);
+    }
+
+    scrollEl.addEventListener("scroll", handleScroll);
+
+    setMaxScroll(scrollEl.scrollWidth - scrollEl.clientWidth);
+
+    return () => {
+      scrollEl.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const scrollEl = scrollContainerRef.current;
+    if (!scrollEl) return;
+
+    setMaxScroll(scrollEl.scrollWidth - scrollEl.clientWidth);
+  }, [members.length]);
+
+  function handleScrollChange(value: number) {
+    setScrollPosition(value);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = value;
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -182,12 +218,18 @@ export default function HomePage() {
         setFiltersOpen={setFiltersOpen}
         clearFilters={clearFilters}
         filtersAreActive={filtersAreActive}
+        onScrollChange={handleScrollChange}
+        scrollPosition={scrollPosition}
+        maxScroll={maxScroll}
       />
+
       <MembersScroll
         members={members}
         hasMore={hasMore}
         loaderRef={loaderRef}
+        scrollContainerRef={scrollContainerRef}
       />
+
       {filtersOpen && (
         <Filters
           filters={filters}
