@@ -1,3 +1,4 @@
+import { useMembers } from "../../context/MembersContext";
 import PanelButton from "../common/PanelButton";
 import filterIcon from "./../../assets/filterIcon.svg";
 import searchWhiteIcon from "./../../assets/searchWhiteIcon.svg";
@@ -17,6 +18,9 @@ export default function MemberPanel({
   filtersAreActive,
 }: MemberPanelProps) {
   const btnSize = { width: "17.5rem" };
+  const { state } = useMembers();
+  const { members, activeFilters } = state;
+  const isNameSearch = activeFilters.name.trim() !== "";
 
   return (
     <div className="flex flex-row pl-[5rem] mb-[2.5rem] items-center gap-[2rem]">
@@ -29,7 +33,7 @@ export default function MemberPanel({
         {...btnSize}
       />
 
-      {!filtersOpen && !filtersAreActive && (
+      {!filtersOpen && !filtersAreActive && !isNameSearch && (
         <PanelButton
           type="button"
           icon={filterIcon}
@@ -40,7 +44,8 @@ export default function MemberPanel({
         />
       )}
 
-      {filtersAreActive && (
+      {/* Если активны другие фильтры (но нет имени) */}
+      {filtersAreActive && !isNameSearch && (
         <PanelButton
           type="button"
           icon={filterActiveIcon}
@@ -51,7 +56,8 @@ export default function MemberPanel({
         />
       )}
 
-      {filtersAreActive && (
+      {/* Если есть имя или есть любые активные фильтры */}
+      {(isNameSearch || filtersAreActive) && (
         <PanelButton
           type="button"
           label="ОЧИСТИТЬ ВСЁ"
@@ -65,7 +71,12 @@ export default function MemberPanel({
         />
       )}
 
-      <p className="text-5xl text-[#514F4D]">СТЕНА ПАМЯТИ</p>
+      <p className="text-5xl text-[#514F4D] flex items-center gap-4">
+        {isNameSearch ? "РЕЗУЛЬТАТЫ ПОИСКА" : "СТЕНА ПАМЯТИ"}
+        {isNameSearch && (
+          <span className="text-4xl text-gray-500">{members.length}</span>
+        )}
+      </p>
     </div>
   );
 }

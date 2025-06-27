@@ -63,6 +63,7 @@ export default function Filters({ filters, loading, onClose }: FiltersProps) {
       rank: selectedRank ? [selectedRank] : [],
       yearStart: selectedYears ? selectedYears[0] : yearStart,
       yearEnd: selectedYears ? selectedYears[1] : yearEnd,
+      name: "",
     };
 
     dispatch({ type: "SET_FILTERS", payload: newFilters });

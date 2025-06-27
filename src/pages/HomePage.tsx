@@ -91,6 +91,8 @@ export default function HomePage() {
 
   useEffect(() => {
     dispatch({ type: "RESET_PAGE_AND_MEMBERS" });
+
+    console.log(activeFilters);
   }, [activeFilters, dispatch]);
 
   useEffect(() => {
@@ -125,19 +127,16 @@ export default function HomePage() {
   }, [filtersOpen, filters]);
 
   function clearFilters() {
-    if (filters) {
-      const safeFilters = filters as FiltersData;
-      dispatch({
-        type: "SET_FILTERS",
-        payload: {
-          rank: [],
-          word: [],
-          yearStart: safeFilters.yearStart,
-          yearEnd: safeFilters.yearEnd,
-          name: "",
-        },
-      });
-    }
+    dispatch({
+      type: "SET_FILTERS",
+      payload: {
+        rank: [],
+        word: [],
+        yearStart: 0,
+        yearEnd: 1946,
+        name: "",
+      },
+    });
 
     dispatch({ type: "RESET_PAGE_AND_MEMBERS" });
   }
