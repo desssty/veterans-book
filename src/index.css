@@ -65,3 +65,49 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.custom-range {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+
+.custom-range::-webkit-slider-runnable-track {
+  height: 1.5px;
+  background-image: repeating-linear-gradient(
+    to right,
+    #514f4d,
+    #514f4d 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.custom-range::-moz-range-track {
+  height: 1.5px;
+  background-image: repeating-linear-gradient(
+    to right,
+    #514f4d,
+    #514f4d 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 4rem;
+  height: 4rem;
+  background: url("/src/assets/wiperIcon.svg") no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+  margin-top: -2rem;
+}
+
+.custom-range::-moz-range-thumb {
+  width: 4rem;
+  height: 4rem;
+  background: url("/src/assets/wiperIcon.svg") no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+}

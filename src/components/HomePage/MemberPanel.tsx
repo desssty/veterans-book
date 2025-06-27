@@ -50,7 +50,6 @@ export default function MemberPanel({
         />
       )}
 
-      {/* Если активны другие фильтры (но нет имени) */}
       {filtersAreActive && !isNameSearch && (
         <PanelButton
           type="button"
@@ -62,7 +61,6 @@ export default function MemberPanel({
         />
       )}
 
-      {/* Если есть имя или есть любые активные фильтры */}
       {(isNameSearch || filtersAreActive) && (
         <PanelButton
           type="button"
@@ -83,14 +81,16 @@ export default function MemberPanel({
           <span className="text-4xl text-gray-500">{members.length}</span>
         )}
       </p>
-      <input
-        type="range"
-        min={0}
-        max={maxScroll}
-        value={scrollPosition}
-        onChange={(e) => onScrollChange(Number(e.target.value))}
-        style={{ width: "300px" }}
-      />
+      <div className="flex-grow relative h-[40px] ml-auto mr-[5rem]">
+        <input
+          type="range"
+          min={0}
+          max={maxScroll}
+          value={scrollPosition}
+          onChange={(e) => onScrollChange(Number(e.target.value))}
+          className="custom-range w-full h-full"
+        />
+      </div>
     </div>
   );
 }
